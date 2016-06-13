@@ -141,13 +141,12 @@ git pull origin master
 Confirm the merge message when asked about it (i.e. save the
 temporarily opened file, and exit the editor).
 
-###Push all git branches to remote repo###
+###Push all branches and tags to remote repo###
 Now we're ready to push the master branch to the remote...
 ```
 git push -u origin master
 ```
 
-###Push all branched and tags to remote repo###
 And all other branches and tags, too
 ```
 git push origin --all   # push all branches
