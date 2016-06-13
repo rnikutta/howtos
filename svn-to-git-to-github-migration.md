@@ -258,7 +258,7 @@ new(er) SSL certificates. The clients (which all use ```git svn```
 under the hood) would not accept the certificate, neither
 (t)emporarily, nor (p)ermanently.
 
-#What tools didn't work##
+##What tools didn't work##
 Despite all the googling in the world, most tools and scripts
 available online either work only partially, or are outright broken.
 
@@ -292,7 +292,7 @@ didn't help (but you get to see all the nitty-gritty of SSH in action).
   
   [http://blogs.atlassian.com/2012/01/moving-confluence-from-subversion-to-git/](http://blogs.atlassian.com/2012/01/moving-confluence-from-subversion-to-git/)
 
-#Some other tools (not tried)
+##Some other tools (not tried)##
 
 - KDE has an own tool called
   [Svn2Git](https://techbase.kde.org/Projects/MoveToGit/UsingSvn2Git),
