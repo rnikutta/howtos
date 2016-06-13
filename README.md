@@ -1,2 +1,2 @@
 # howtos
-Never forget gain how I did something
+Never forget again how I did something. Howtos and practical one-offs.
