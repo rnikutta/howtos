@@ -2,15 +2,17 @@
 
 Author: Robert Nikutta
 
-Version: 2016-06-13
+Version: 2017-12-26
 
-##Primer##
+Version original: 2016-06-13
+
+## Primer
 We wanted to migrate an SVN repository called "dusty" that has years of development
 history, to git, and then host it on github.  The SVN repo is hosted
 at ```svn+ssh://some.server.edu/path/to/svn/dusty```, but is also accessible
 through https at ```https://some.server.edu/path/to/svn/dusty```
 
-##Requirements##
+## Requirements
 The migration should fulfill all these requirements:
 
 - preserve all history
@@ -19,11 +21,11 @@ The migration should fulfill all these requirements:
 - turn SVN 'branches' into git branches
 - remove 'trunk' once all is said and done (since 'master' is the git equivalent)
 
-##Steps to get it done##
+## Steps to get it done
 
 
 
-###Make a directory to store the git-tified SVN dump##
+### Make a directory to store the git-tified SVN dump
 
 Make a temporary directory and change to it
 ```
@@ -32,7 +34,7 @@ mkdir $DIR
 cd $DIR
 ```
 
-###Compile a list of contributors###
+### Compile a list of contributors
 The SVN repo has committer/user names, and github identifies
 contributors by they registered email addresses. We need to map the
 two. A file like this will do just that:
@@ -47,7 +49,7 @@ Every line is one committer, and the format is
 svnuser = Real Name <github-email>
 ```
 
-###Pull from the SVN repo###
+### Pull from the SVN repo
 ```
 git svn clone --prefix=svn/ -s -A ~/authors.txt svn+ssh://validuser@some.server.edu/path/to/svn/dusty dusty
 ```
@@ -56,7 +58,7 @@ Be ready to type (or better paste) your SSH password many times!
 (basically every time the clone descends into another branch). IIRC I
 had to provide the password a total of 11 times.
 
-###Turn SVN branches into git branches, and SVN tag branches to git tags###
+### Turn SVN branches into git branches, and SVN tag branches to git tags
 
 Have this shell script ready in a file:
 ```
@@ -68,7 +70,7 @@ set -e
 
 cd $PWD;
 
-# make tags
+### Make tags
 echo "\n///////// TAGS"
 git for-each-ref --format='%(refname)' refs/remotes/svn/tags/* | while read r; do
     tag=${r#refs/remotes/svn/tags/}
@@ -89,7 +91,7 @@ git for-each-ref --format='%(refname)' refs/remotes/svn/tags/* | while read r; d
     git update-ref -d "$r"
 done
 
-# create local branches out of svn branches
+### create local branches out of svn branches
 echo "\n///////// BRANCHES"
 git for-each-ref --format='%(refname)' refs/remotes/svn/ | while read branch_ref; do
     branch=${branch_ref#refs/remotes/svn/}
@@ -113,7 +115,7 @@ cd dusty   # change to the newly pulled repo
 ~/make_tags_branches.sh   # run it in the repo
 ```
 
-###Create a new git repo on github###
+### Create a new git repo on github
 Log into your account on github, click on "Repositories", create a new
 one. I you initialize it (i.e. add some files, and possibly a LICENSE
 file), then don't skip the step [Pull changes from remote](#pull). In
@@ -124,7 +126,7 @@ e.g. here
 https://github.com/rnikutta/dusty.git
 ```
 
-###Add new git repo as remote origin branch###
+### Add new git repo as remote origin branch
 Add the new github repo as remote tracking branch to the local repo
 ```
 git remote add origin https://github.com/rnikutta/dusty.git
@@ -132,7 +134,7 @@ git remote add origin https://github.com/rnikutta/dusty.git
 
 <a id="pull"></a>
 
-###Pull changes from remote###
+### Pull changes from remote
 If you've already initialized the github repo with some files, then
 pull then changes from remote to local first
 ```
@@ -141,7 +143,7 @@ git pull origin master
 Confirm the merge message when asked about it (i.e. save the
 temporarily opened file, and exit the editor).
 
-###Push all branches and tags to remote repo###
+### Push all branches and tags to remote repo
 Now we're ready to push the master branch to the remote...
 ```
 git push -u origin master
@@ -251,13 +253,13 @@ git branch -a
 git tag -l
 ```
 
-##What didn't work in general##
+## What didn't work in general
 - Accessing the SVN repo through https, because the hosting server has
 new(er) SSL certificates. The clients (which all use ```git svn```
 under the hood) would not accept the certificate, neither
 (t)emporarily, nor (p)ermanently.
 
-##What tools didn't work##
+## What tools didn't work
 Despite all the googling in the world, most tools and scripts
 available online either work only partially, or are outright broken.
 
@@ -291,9 +293,10 @@ didn't help (but you get to see all the nitty-gritty of SSH in action).
   
   [http://blogs.atlassian.com/2012/01/moving-confluence-from-subversion-to-git/](http://blogs.atlassian.com/2012/01/moving-confluence-from-subversion-to-git/)
 
-##Some other tools (not tried)##
+## Some other tools (not tried)
 
 - KDE has an own tool called
   [Svn2Git](https://techbase.kde.org/Projects/MoveToGit/UsingSvn2Git),
   but despite the same name this is not the Ruby-based
   [svn2git](https://github.com/nirvdrum/svn2git).
+  
